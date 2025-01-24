@@ -19,9 +19,9 @@
 |------                 |-------|-----      |------- |------- |-------  |
 | 일정등록              |POST   |schedule   |요청body|등록정보|200:정상등록|
 | 전체일정 조회         |GET    |schedule   |요청param|다건 응답정보|200:정상조회|
-| 선택일정조회          |GET    |schedule/scheduleid |요청param|단건 응답 정보|200:정상조회|
-| 선택한 일정 수정하기  |PUT    |schedule/scheduleid |요청body|수정정보|200:정상수정|
-| 선택한 일정 삭제하기  |DELETE |schedule/scheduleid |요청param|-|200:정상삭제|
+| 선택일정조회          |GET    |schedule/{schedule/id} |요청param|단건 응답 정보|200:정상조회|
+| 선택한 일정 수정하기  |PUT    |schedule/{schedule/id} |요청body|수정정보|200:정상수정|
+| 선택한 일정 삭제하기  |DELETE |schedule/{schedule/id} |요청param|-|200:정상삭제|
 
 
         
