@@ -14,10 +14,10 @@ import java.util.List;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-    private final ScheduleRepository scheduleRepository;
+    private final ScheduleRepository repository;
 
     public ScheduleServiceImpl(ScheduleRepository scheduleRepository) {
-        this.scheduleRepository = scheduleRepository;
+        this.repository = scheduleRepository;
     }
 
     @Override
@@ -26,40 +26,40 @@ public class ScheduleServiceImpl implements ScheduleService {
         Schedule schedule = new Schedule(requestDto.getName(),requestDto.getPw(),requestDto.getContents());
 
         //Inmemory DB에 Schedule 저장
-        return scheduleRepository.saveSchedule(schedule);
+        return repository.saveSchedule(schedule);
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedules() {
+    public List<ScheduleResponseDto> findAllSchedules(String updateAt, String name) {
         //전체 조회
-        List<ScheduleResponseDto> allSchedules = scheduleRepository.findAllSchedules();
-        return allSchedules;
+        return repository.findAllSchedules(updateAt,name);
     }
 
     @Override
-    public ScheduleResponseDto findScheduleByName(String name) {
+    public ScheduleResponseDto findScheduleByName(Long id) {
         //식별자의 Schedule이 없다면?
-        Schedule schedule = scheduleRepository.findScheduleByIdOrElseThrow(name);
+        Schedule schedule = repository.findScheduleByIdOrElseThrow(id);
         return new ScheduleResponseDto(schedule);
     }
 
     @Transactional
     @Override
-    public ScheduleResponseDto updateSchedule(String name, String pw, String contents) {
+    public ScheduleResponseDto updateSchedule(Long id,String title, String name,String pw, String contents) {
         //필수값 검증
         if (pw == null || contents == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The pw and contents are required values.");
         }
+        validPassword(id,pw);
 
-        int updatedRow = scheduleRepository.updateSchedule(name, pw, contents);
+        int updatedRow = repository.updateSchedule(id,title,name,pw,contents);
 
         // NPE 방지
         if (updatedRow == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist name = " + name);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist name = " + id);
         }
 
         //  schedule 수정
-        Schedule schedule = scheduleRepository.findScheduleByIdOrElseThrow(name);
+        Schedule schedule = repository.findScheduleByIdOrElseThrow(id);
 
         return new ScheduleResponseDto(schedule);
     }
@@ -68,7 +68,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void deleteSchedule(Long id, String pw) {
         //schedule 삭제
 
-        int deleteRow = scheduleRepository.deleteschedule(id);
+        int deleteRow = repository.deleteschedule(id,pw);
 
         //NPE 방지 삭제된 row가 0개라면
 
@@ -77,6 +77,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
     }
 
+    @Override
+    public void validPassword(Long id, String pw) {
+        if (!repository.validPassword(id, pw)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"비밀번호가 일치하지 않습니다.");
+        }
+
+    }
 
 
 }

@@ -10,14 +10,16 @@ public interface ScheduleRepository {
 
     ScheduleResponseDto saveSchedule(Schedule schedule);
 
-    List<ScheduleResponseDto> findAllSchedules();
+    List<ScheduleResponseDto> findAllSchedules(String updateAt,String name);
 
     Optional<Schedule> findScheduleByName(String name);
 
-    Schedule findScheduleByIdOrElseThrow(String name);
+    Schedule findScheduleByIdOrElseThrow(Long id);
 
-    int updateSchedule(String name, String pw, String contents);
+    int updateSchedule(Long id, String title,String name, String pw, String contents);
 
-    int deleteschedule(Long id);
+    int deleteschedule(Long id,String pw);
+
+    boolean validPassword(Long id, String pw);
 
 }
