@@ -21,10 +21,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public ScheduleResponseDto saveSchedule(ScheduleRequestDto requestDto) {
+    public ScheduleResponseDto saveSchedule(ScheduleRequestDto dto) {
         //요청받은 데이터로 Schedule 객체 생성 ID없음
-        Schedule schedule = new Schedule(requestDto.getName(),requestDto.getPw(),requestDto.getContents());
-
+        System.out.println("dto.getName() = " + dto.getName());
+        Schedule schedule = new Schedule(dto.getName(),dto.getTitle(),dto.getPw(),dto.getContents());
+        
         //Inmemory DB에 Schedule 저장
         return repository.saveSchedule(schedule);
     }

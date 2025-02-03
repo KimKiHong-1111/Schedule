@@ -21,8 +21,15 @@ public class Schedule {
     private LocalDateTime createdDate = LocalDateTime.now(); //작성일
     private LocalDateTime updatedDate = createdDate; //수정일
 
-    //일정 생성자
-    public Schedule(String name,String pw,String contents) {
+    public Schedule(Long id, String name, String title, String contents) {
+        this.id = id;
+        this.title = title;
+        this.name = name;
+        this.contents = contents;
+    }
+
+    //일정 생성자 네임,타이틀
+    public Schedule(String name,String title,String pw,String contents) {
         this.name = name;
         this.title = title;
         this.pw = pw;

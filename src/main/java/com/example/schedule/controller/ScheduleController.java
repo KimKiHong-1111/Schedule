@@ -28,7 +28,7 @@ public class ScheduleController {
     //@return : @Link ResponseEntity<ScheduleReponseDto> JSON 응답
     @PostMapping
     public ResponseEntity<ScheduleResponseDto>createSchedule(@RequestBody ScheduleRequestDto dto) {
-        return  new ResponseEntity<>(scheduleService.saveSchedule(dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(scheduleService.saveSchedule(dto), HttpStatus.CREATED);
     }
 
     //일정 전체 조회 API
